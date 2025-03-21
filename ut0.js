@@ -1,6 +1,37 @@
+async function searchBooksByTitle(title) {
+  try {
+    const response = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(title)}`);
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error al buscar libros:', error);
+    return null;
+  }
+}
+
+async function getBookDetails(olid) {
+  try {
+    const response = await fetch(`https://openlibrary.org/works/${olid}.json`);
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error al obtener detalles del libro:', error);
+    return null;
+  }
+}
+
+
+
+
+
+
 async function main() {
     
-    const searchResults = await searchBooksByTitle('Don Quixote');
+    const searchResults = await searchBooksByTitle('Don Quijote');
     
     if (searchResults && searchResults.docs.length > 0) {
       console.log(`Se encontraron ${searchResults.numFound} resultados.`);
@@ -35,3 +66,5 @@ async function main() {
       console.log('No se encontraron resultados o hubo un error en la búsqueda.');
     }
   }
+
+  main();
